@@ -1,0 +1,45 @@
+{
+  "index": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "analysis": {
+    "analyzer": {
+      "product_analyzer": {
+        "type": "custom",
+        "tokenizer": "standard",
+        "filter": ["lowercase", "asciifolding", "product_synonyms"]
+      },
+      "autocomplete_analyzer": {
+        "type": "custom",
+        "tokenizer": "standard",
+        "filter": ["lowercase", "autocomplete_filter"]
+      }
+    },
+    "filter": {
+      "autocomplete_filter": {
+        "type": "edge_ngram",
+        "min_gram": 2,
+        "max_gram": 20
+      },
+      "product_synonyms": {
+        "type": "synonym",
+        "synonyms": [
+          "handmade, handcrafted, artisan",
+          "saree, sari",
+          "brass, bronze",
+          "wooden, wood",
+          "cotton, khadi",
+          "silk, resham",
+          "pottery, ceramic, terracotta",
+          "leather, chamda",
+          "bamboo, cane",
+          "jute, hemp",
+          "embroidery, zari, zardozi",
+          "block print, batik",
+          "weaving, handloom"
+        ]
+      }
+    }
+  }
+}

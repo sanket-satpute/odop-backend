@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
+    <table role="presentation" style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td align="center" style="padding: 40px 0;">
+                <table role="presentation" style="width: 600px; border-collapse: collapse; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%); padding: 40px 30px; text-align: center; border-radius: 10px 10px 0 0;">
+                            <div style="width: 80px; height: 80px; background-color: rgba(255, 255, 255, 0.2); border-radius: 50%; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 50px;">✅</span>
+                            </div>
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Payment Successful!</h1>
+                            <p style="color: rgba(255, 255, 255, 0.9); margin: 10px 0 0 0; font-size: 16px;">
+                                Your payment has been processed successfully
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Payment Details -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <p style="color: #666666; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
+                                Hi <strong th:text="${customerName}">Customer</strong>,
+                                <br><br>
+                                We've received your payment. Thank you for shopping with ODOP Store!
+                            </p>
+                            
+                            <!-- Transaction Card -->
+                            <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #f8f9fa; border-radius: 10px;">
+                                <tr>
+                                    <td style="padding: 25px;">
+                                        <h3 style="color: #333333; margin: 0 0 20px 0; font-size: 18px; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">
+                                            💳 Transaction Details
+                                        </h3>
+                                        
+                                        <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                                            <tr>
+                                                <td style="padding: 10px 0; color: #666666; font-size: 14px;">Order ID</td>
+                                                <td style="padding: 10px 0; color: #333333; font-size: 14px; text-align: right; font-weight: 500;" th:text="${orderId}">#ORD-123456</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 10px 0; color: #666666; font-size: 14px;">Payment ID</td>
+                                                <td style="padding: 10px 0; color: #333333; font-size: 14px; text-align: right; font-weight: 500;" th:text="${paymentId}">PAY-123456</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 10px 0; color: #666666; font-size: 14px;">Razorpay ID</td>
+                                                <td style="padding: 10px 0; color: #333333; font-size: 14px; text-align: right; font-weight: 500;" th:text="${razorpayPaymentId}">pay_xxxxx</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 10px 0; color: #666666; font-size: 14px;">Payment Method</td>
+                                                <td style="padding: 10px 0; color: #333333; font-size: 14px; text-align: right; font-weight: 500;" th:text="${paymentMethod}">Card</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 10px 0; color: #666666; font-size: 14px;">Date &amp; Time</td>
+                                                <td style="padding: 10px 0; color: #333333; font-size: 14px; text-align: right;" th:text="${transactionDate}">Jan 15, 2024 10:30 AM</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="padding-top: 15px; border-top: 2px dashed #ddd;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 10px 0; color: #333333; font-size: 18px; font-weight: bold;">Amount Paid</td>
+                                                <td style="padding: 10px 0; color: #00b09b; font-size: 24px; font-weight: bold; text-align: right;">
+                                                    <span th:text="${currency}">₹</span><span th:text="${#numbers.formatDecimal(amount, 1, 2)}">0.00</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Status Badge -->
+                            <table role="presentation" style="width: 100%; border-collapse: collapse; margin-top: 30px;">
+                                <tr>
+                                    <td align="center">
+                                        <span style="display: inline-block; background-color: #d4edda; color: #155724; 
+                                                     padding: 10px 25px; border-radius: 20px; font-size: 14px; font-weight: bold;">
+                                            ✓ Payment Verified &amp; Confirmed
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Next Steps -->
+                            <table role="presentation" style="width: 100%; border-collapse: collapse; margin-top: 30px;">
+                                <tr>
+                                    <td style="background-color: #e8f4fd; border-radius: 8px; padding: 20px;">
+                                        <h4 style="color: #0c5460; margin: 0 0 10px 0; font-size: 16px;">📋 What's Next?</h4>
+                                        <ul style="color: #0c5460; font-size: 14px; line-height: 1.8; margin: 0; padding-left: 20px;">
+                                            <li>Your order is being prepared by our team</li>
+                                            <li>You'll receive a shipping notification email soon</li>
+                                            <li>Track your order anytime from your account</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f8f9fa; padding: 30px; text-align: center; border-radius: 0 0 10px 10px;">
+                            <p style="color: #666666; font-size: 14px; margin: 0 0 10px 0;">
+                                This is an automated payment confirmation. Please keep this email for your records.
+                            </p>
+                            <p style="color: #cccccc; font-size: 12px; margin: 0;">
+                                © <span th:text="${year}">2024</span> ODOP Store. All rights reserved.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

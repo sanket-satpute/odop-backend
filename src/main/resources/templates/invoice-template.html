@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="'Invoice - ' + ${invoice.invoiceNumber}">Invoice</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-size: 11px;
+            line-height: 1.4;
+            color: #333;
+            background: #fff;
+        }
+        
+        .invoice-container {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 10mm;
+        }
+        
+        /* Header */
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 3px solid #FF6B35;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .company-info h1 {
+            font-size: 24px;
+            color: #FF6B35;
+            margin-bottom: 5px;
+        }
+        
+        .company-info p {
+            color: #666;
+            font-size: 10px;
+        }
+        
+        .invoice-title {
+            text-align: right;
+        }
+        
+        .invoice-title h2 {
+            font-size: 28px;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .invoice-title .invoice-number {
+            font-size: 12px;
+            color: #FF6B35;
+            margin-top: 5px;
+        }
+        
+        /* Billing Section */
+        .billing-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+        
+        .billing-box {
+            width: 48%;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .billing-box h3 {
+            font-size: 11px;
+            color: #FF6B35;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        
+        .billing-box p {
+            margin-bottom: 3px;
+        }
+        
+        .billing-box .name {
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        /* Invoice Details */
+        .invoice-details {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        
+        .invoice-details table {
+            width: 250px;
+        }
+        
+        .invoice-details td {
+            padding: 5px 10px;
+        }
+        
+        .invoice-details td:first-child {
+            color: #666;
+        }
+        
+        .invoice-details td:last-child {
+            text-align: right;
+            font-weight: bold;
+        }
+        
+        /* Items Table */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .items-table thead {
+            background: #FF6B35;
+            color: white;
+        }
+        
+        .items-table th {
+            padding: 10px 8px;
+            text-align: left;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+        
+        .items-table th:last-child,
+        .items-table td:last-child {
+            text-align: right;
+        }
+        
+        .items-table th:nth-child(3),
+        .items-table td:nth-child(3),
+        .items-table th:nth-child(4),
+        .items-table td:nth-child(4) {
+            text-align: center;
+        }
+        
+        .items-table tbody tr {
+            border-bottom: 1px solid #eee;
+        }
+        
+        .items-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .items-table td {
+            padding: 10px 8px;
+            vertical-align: top;
+        }
+        
+        .product-name {
+            font-weight: bold;
+        }
+        
+        .product-desc {
+            font-size: 9px;
+            color: #666;
+        }
+        
+        /* Summary Section */
+        .summary-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .amount-words {
+            width: 55%;
+            padding: 15px;
+            background: #fff8f5;
+            border-left: 3px solid #FF6B35;
+        }
+        
+        .amount-words h4 {
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .amount-words p {
+            font-style: italic;
+            font-size: 11px;
+        }
+        
+        .totals-box {
+            width: 40%;
+        }
+        
+        .totals-box table {
+            width: 100%;
+        }
+        
+        .totals-box tr {
+            border-bottom: 1px solid #eee;
+        }
+        
+        .totals-box td {
+            padding: 8px 10px;
+        }
+        
+        .totals-box td:last-child {
+            text-align: right;
+        }
+        
+        .totals-box .grand-total {
+            background: #FF6B35;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .totals-box .grand-total td {
+            padding: 12px 10px;
+        }
+        
+        /* GST Summary */
+        .gst-summary {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .gst-summary h4 {
+            font-size: 11px;
+            color: #FF6B35;
+            margin-bottom: 10px;
+        }
+        
+        .gst-summary table {
+            width: 100%;
+            font-size: 10px;
+        }
+        
+        .gst-summary th {
+            text-align: left;
+            padding: 5px;
+            background: #eee;
+        }
+        
+        .gst-summary td {
+            padding: 5px;
+        }
+        
+        /* Footer */
+        .invoice-footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .terms {
+            font-size: 9px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .terms h4 {
+            font-size: 10px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .signature-box {
+            width: 45%;
+            text-align: center;
+        }
+        
+        .signature-line {
+            border-top: 1px solid #333;
+            margin-top: 40px;
+            padding-top: 5px;
+            font-size: 10px;
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .status-paid {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* ODOP Badge */
+        .odop-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            border: 2px solid #FF6B35;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #FF6B35;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <!-- Header -->
+        <div class="invoice-header">
+            <div class="company-info">
+                <h1 th:text="${invoice.companyName}">ODOP</h1>
+                <p th:text="${invoice.companyAddress}">One District One Product</p>
+                <p th:if="${invoice.companyGstin != null}">GSTIN: <span th:text="${invoice.companyGstin}"></span></p>
+            </div>
+            <div class="invoice-title">
+                <h2>Tax Invoice</h2>
+                <p class="invoice-number" th:text="${invoice.invoiceNumber}">ODOP-INV-2026-00001</p>
+            </div>
+        </div>
+        
+        <!-- Billing Section -->
+        <div class="billing-section">
+            <div class="billing-box">
+                <h3>Bill To (Customer)</h3>
+                <p class="name" th:text="${invoice.customerName}">Customer Name</p>
+                <p th:text="${invoice.customerAddress}">Address</p>
+                <p>
+                    <span th:text="${invoice.customerCity}">City</span>, 
+                    <span th:text="${invoice.customerState}">State</span> - 
+                    <span th:text="${invoice.customerPinCode}">PIN</span>
+                </p>
+                <p th:if="${invoice.customerPhone != null}">Phone: <span th:text="${invoice.customerPhone}"></span></p>
+                <p th:if="${invoice.customerEmail != null}">Email: <span th:text="${invoice.customerEmail}"></span></p>
+                <p th:if="${invoice.customerGstin != null}">GSTIN: <span th:text="${invoice.customerGstin}"></span></p>
+            </div>
+            <div class="billing-box">
+                <h3>Ship From (Vendor)</h3>
+                <p class="name" th:text="${invoice.vendorShopName}">Shop Name</p>
+                <p th:text="${invoice.vendorName}">Vendor Name</p>
+                <p th:text="${invoice.vendorAddress}">Address</p>
+                <p>
+                    <span th:text="${invoice.vendorCity}">City</span>, 
+                    <span th:text="${invoice.vendorState}">State</span> - 
+                    <span th:text="${invoice.vendorPinCode}">PIN</span>
+                </p>
+                <p th:if="${invoice.vendorGstin != null}">GSTIN: <span th:text="${invoice.vendorGstin}"></span></p>
+            </div>
+        </div>
+        
+        <!-- Invoice Details -->
+        <div class="invoice-details">
+            <table>
+                <tr>
+                    <td>Invoice Date:</td>
+                    <td th:text="${formattedDate}">01 Jan 2026</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td th:text="${formattedDueDate}">31 Jan 2026</td>
+                </tr>
+                <tr>
+                    <td>Order ID:</td>
+                    <td th:text="${invoice.orderId}">ORD-12345</td>
+                </tr>
+                <tr>
+                    <td>Payment Status:</td>
+                    <td>
+                        <span class="status-badge" 
+                              th:classappend="${invoice.paymentStatus == 'PAID'} ? 'status-paid' : (${invoice.paymentStatus == 'PENDING'} ? 'status-pending' : 'status-failed')"
+                              th:text="${invoice.paymentStatus}">PAID</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Supply Type:</td>
+                    <td th:text="${invoice.supplyType}">INTRA_STATE</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Items Table -->
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th style="width: 5%">#</th>
+                    <th style="width: 35%">Product</th>
+                    <th style="width: 10%">HSN</th>
+                    <th style="width: 10%">Qty</th>
+                    <th style="width: 15%">Unit Price</th>
+                    <th style="width: 10%">Tax</th>
+                    <th style="width: 15%">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item, iterStat : ${invoice.items}">
+                    <td th:text="${iterStat.index + 1}">1</td>
+                    <td>
+                        <div class="product-name" th:text="${item.productName}">Product Name</div>
+                        <div class="product-desc" th:text="${item.description}">Description</div>
+                    </td>
+                    <td th:text="${item.hsnCode != null} ? ${item.hsnCode} : '-'">-</td>
+                    <td th:text="${item.quantity}">1</td>
+                    <td th:text="'₹' + ${#numbers.formatDecimal(item.unitPrice, 1, 2)}">₹100.00</td>
+                    <td th:text="'₹' + ${#numbers.formatDecimal(item.cgstAmount + item.sgstAmount + item.igstAmount, 1, 2)}">₹18.00</td>
+                    <td th:text="'₹' + ${#numbers.formatDecimal(item.totalAmount, 1, 2)}">₹118.00</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Summary Section -->
+        <div class="summary-section">
+            <div class="amount-words">
+                <h4>Amount in Words</h4>
+                <p th:text="${amountInWords}">One Hundred Eighteen Rupees Only</p>
+            </div>
+            <div class="totals-box">
+                <table>
+                    <tr>
+                        <td>Subtotal</td>
+                        <td th:text="'₹' + ${#numbers.formatDecimal(invoice.subtotal, 1, 2)}">₹100.00</td>
+                    </tr>
+                    <tr th:if="${invoice.discountAmount != null and invoice.discountAmount > 0}">
+                        <td>Discount</td>
+                        <td th:text="'-₹' + ${#numbers.formatDecimal(invoice.discountAmount, 1, 2)}">-₹10.00</td>
+                    </tr>
+                    <tr th:if="${invoice.cgstAmount != null and invoice.cgstAmount > 0}">
+                        <td th:text="'CGST (' + ${invoice.cgstRate} + '%)'">CGST (9%)</td>
+                        <td th:text="'₹' + ${#numbers.formatDecimal(invoice.cgstAmount, 1, 2)}">₹9.00</td>
+                    </tr>
+                    <tr th:if="${invoice.sgstAmount != null and invoice.sgstAmount > 0}">
+                        <td th:text="'SGST (' + ${invoice.sgstRate} + '%)'">SGST (9%)</td>
+                        <td th:text="'₹' + ${#numbers.formatDecimal(invoice.sgstAmount, 1, 2)}">₹9.00</td>
+                    </tr>
+                    <tr th:if="${invoice.igstAmount != null and invoice.igstAmount > 0}">
+                        <td th:text="'IGST (' + ${invoice.igstRate} + '%)'">IGST (18%)</td>
+                        <td th:text="'₹' + ${#numbers.formatDecimal(invoice.igstAmount, 1, 2)}">₹18.00</td>
+                    </tr>
+                    <tr th:if="${invoice.shippingCharges != null and invoice.shippingCharges > 0}">
+                        <td>Shipping</td>
+                        <td th:text="'₹' + ${#numbers.formatDecimal(invoice.shippingCharges, 1, 2)}">₹50.00</td>
+                    </tr>
+                    <tr class="grand-total">
+                        <td>Grand Total</td>
+                        <td th:text="'₹' + ${#numbers.formatDecimal(invoice.grandTotal, 1, 2)}">₹168.00</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- GST Summary -->
+        <div class="gst-summary" th:if="${invoice.totalGst != null and invoice.totalGst > 0}">
+            <h4>GST Summary</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tax Type</th>
+                        <th>Taxable Amount</th>
+                        <th>Rate</th>
+                        <th>Tax Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${invoice.cgstAmount != null and invoice.cgstAmount > 0}">
+                        <td>CGST</td>
+                        <td th:text="'₹' + ${#numbers.formatDecimal(invoice.taxableAmount, 1, 2)}"></td>
+                        <td th:text="${invoice.cgstRate} + '%'"></td>
+                        <td th:text="'₹' + ${#numbers.formatDecimal(invoice.cgstAmount, 1, 2)}"></td>
+                    </tr>
+                    <tr th:if="${invoice.sgstAmount != null and invoice.sgstAmount > 0}">
+                        <td>SGST</td>
+                        <td th:text="'₹' + ${#numbers.formatDecimal(invoice.taxableAmount, 1, 2)}"></td>
+                        <td th:text="${invoice.sgstRate} + '%'"></td>
+                        <td th:text="'₹' + ${#numbers.formatDecimal(invoice.sgstAmount, 1, 2)}"></td>
+                    </tr>
+                    <tr th:if="${invoice.igstAmount != null and invoice.igstAmount > 0}">
+                        <td>IGST</td>
+                        <td th:text="'₹' + ${#numbers.formatDecimal(invoice.taxableAmount, 1, 2)}"></td>
+                        <td th:text="${invoice.igstRate} + '%'"></td>
+                        <td th:text="'₹' + ${#numbers.formatDecimal(invoice.igstAmount, 1, 2)}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Footer -->
+        <div class="invoice-footer">
+            <div class="terms">
+                <h4>Terms &amp; Conditions</h4>
+                <p th:utext="${#strings.replace(invoice.termsAndConditions, T(java.lang.System).lineSeparator(), '&lt;br/&gt;')}">
+                    Terms and conditions text
+                </p>
+            </div>
+            
+            <div class="signature-section">
+                <div class="signature-box">
+                    <div class="signature-line">Customer Signature</div>
+                </div>
+                <div class="signature-box">
+                    <div class="signature-line">Authorized Signatory</div>
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 20px; font-size: 9px; color: #999;">
+                This is a computer-generated invoice. No signature required.<br/>
+                For support, contact: support@odop.gov.in | www.odop.gov.in
+            </p>
+        </div>
+    </div>
+</body>
+</html>

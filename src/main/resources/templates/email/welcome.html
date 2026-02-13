@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to ODOP Store</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
+    <table role="presentation" style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td align="center" style="padding: 40px 0;">
+                <table role="presentation" style="width: 600px; border-collapse: collapse; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center; border-radius: 10px 10px 0 0;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 32px;">🎉 Welcome to ODOP!</h1>
+                            <p style="color: rgba(255, 255, 255, 0.9); margin: 10px 0 0 0; font-size: 16px;">One District One Product - Authentic Indian Products</p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <h2 style="color: #333333; margin: 0 0 20px 0; font-size: 24px;">
+                                Hello, <span th:text="${customerName}">Customer</span>! 👋
+                            </h2>
+                            
+                            <p style="color: #666666; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+                                Thank you for creating your <strong th:text="${accountType}">CUSTOMER</strong> account with ODOP Store! 
+                                We're thrilled to have you join our community of artisans and craft enthusiasts.
+                            </p>
+                            
+                            <p style="color: #666666; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
+                                ODOP brings you authentic, handcrafted products from different districts of India, 
+                                supporting local artisans and preserving traditional craftsmanship.
+                            </p>
+                            
+                            <!-- CTA Button -->
+                            <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td align="center">
+                                        <a th:href="${loginUrl}" href="#" 
+                                           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                                  color: #ffffff; text-decoration: none; padding: 15px 40px; 
+                                                  border-radius: 30px; font-size: 16px; font-weight: bold;
+                                                  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+                                            Start Shopping →
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Features -->
+                            <table role="presentation" style="width: 100%; border-collapse: collapse; margin-top: 40px;">
+                                <tr>
+                                    <td style="padding: 20px; background-color: #f8f9fa; border-radius: 10px;">
+                                        <h3 style="color: #333333; margin: 0 0 15px 0; font-size: 18px;">What you can do:</h3>
+                                        <ul style="color: #666666; font-size: 14px; line-height: 1.8; margin: 0; padding-left: 20px;">
+                                            <li>🛍️ Browse authentic products from 700+ districts</li>
+                                            <li>🎨 Discover unique handcrafted items</li>
+                                            <li>💳 Secure payments with Razorpay</li>
+                                            <li>🚚 Fast delivery across India</li>
+                                            <li>⭐ Rate and review products</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f8f9fa; padding: 30px; text-align: center; border-radius: 0 0 10px 10px;">
+                            <p style="color: #999999; font-size: 14px; margin: 0 0 10px 0;">
+                                Need help? Contact us at 
+                                <a th:href="'mailto:' + ${supportEmail}" href="mailto:support@odop.com" 
+                                   style="color: #667eea; text-decoration: none;" th:text="${supportEmail}">support@odop.com</a>
+                            </p>
+                            <p style="color: #cccccc; font-size: 12px; margin: 0;">
+                                © <span th:text="${year}">2024</span> ODOP Store. All rights reserved.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

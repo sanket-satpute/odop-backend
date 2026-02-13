@@ -1,0 +1,29 @@
+=== VENDOR E2E TEST RESULTS ===
+Started: 2026-02-09 21:25:39
+
+[1] Get All Vendors
+    [PASS] Count: 11
+[2] Register Vendor
+    [PASS] Vendor ID: df85512b-d9fc-4f17-9126-39af5ef84217
+[3] Vendor Login
+    [PASS] JWT Token received
+[4] Get Vendor by ID
+    [PASS] Shop: TestShop20260209212539
+[5] Get Vendor Products
+    [PASS] Products: 0
+[6] Get Vendor Orders
+    [PASS] Orders: 0
+[7] Get All Categories
+    [FAIL] Response status code does not indicate success: 403 ().
+[8] Update Vendor Profile
+    [PASS] Updated: UpdatedShop20260209212539
+[9] Search Vendors by State
+    [PASS] Found: 1
+[10] Get All Orders
+    [FAIL] Response status code does not indicate success: 403 ().
+
+=== SUMMARY ===
+Passed: 8
+Failed: 2
+Skipped: 0
+Completed: 2026-02-09 21:25:41

@@ -1,0 +1,121 @@
+server:
+  port: 50982
+
+spring:
+  application:
+    name: ODOP
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: sanket-db2
+  mvc:
+    cors:
+      mapping: /**
+      allowed-origins:
+        - http://localhost:4200
+        - http://localhost:63699
+      allowed-methods: GET,POST,PUT,DELETE
+      allowed-headers: '*'
+      allow-credentials: true
+
+logging:
+  level:
+    '[org.springframework.data.mongodb]': DEBUG
+    '[org.springframework.web]': INFO
+
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    register-with-eureka: false
+#    fetch-registry: false
+
+jwt:
+  secret: your-jwt-secret-your-jwt-secret-your-jwt-secret-your-jwt-secret-your-jwt-secret
+
+# Razorpay Payment Gateway Configuration (TEST MODE - FREE)
+razorpay:
+  key:
+    id: rzp_live_S2eFMwJSzFjYJg      # Replace with your Test Key ID from Razorpay Dashboard
+    secret: 7avgSNvdoO5UCmqFWQWIhi9C    # Replace with your Test Key Secret from Razorpay Dashboard
+  # Test Mode URLs (no real money charged)
+  # Test Cards: 4111 1111 1111 1111 (Success), 4000 0000 0000 0002 (Declined)
+  # Test UPI: success@razorpay (auto-success)
+
+# Email Configuration (Gmail SMTP)
+mail:
+  host: smtp.gmail.com
+  port: 587
+  username: ssatpute445@gmail.com
+  password: 'jznr cqgj oobc kwld'
+  properties:
+    smtp:
+      auth: true
+      starttls:
+        enable: true
+        required: true
+      connectiontimeout: 5000
+      timeout: 5000
+      writetimeout: 5000
+
+# Email Template Settings
+email:
+  from: ssatpute445@gmail.com
+  from-name: ODOP Store
+
+# Twilio SMS Configuration (for OTP Verification)
+twilio:
+  account-sid: YOUR_TWILIO_ACCOUNT_SID
+  auth-token: YOUR_TWILIO_AUTH_TOKEN
+  phone-number: YOUR_TWILIO_PHONE_NUMBER
+  # Get these from: https://console.twilio.com/
+  # Free trial gives you $15 credit
+
+# OTP Settings
+otp:
+  expiry-minutes: 5
+  length: 6
+  max-attempts: 3
+  resend-cooldown-seconds: 60
+
+# Cloudinary Configuration (Cloud Image Upload)
+cloudinary:
+  cloud-name: YOUR_CLOUD_NAME
+  api-key: YOUR_API_KEY
+  api-secret: YOUR_API_SECRET
+  # Get these from: https://cloudinary.com/console
+  # Free tier: 25GB storage + 25GB bandwidth/month
+
+# Image Upload Settings
+image:
+  upload:
+    max-size-mb: 10
+    allowed-types: image/jpeg,image/png,image/gif,image/webp
+    product-folder: odop/products
+    vendor-folder: odop/vendors
+    customer-folder: odop/customers
+    category-folder: odop/categories
+
+# Elasticsearch Configuration (Advanced Search)
+spring.elasticsearch:
+  uris: http://localhost:9200
+  username:               # Optional: ES username if security enabled
+  password:               # Optional: ES password if security enabled
+  connection-timeout: 5s
+  socket-timeout: 30s
+  # Download Elasticsearch: https://www.elastic.co/downloads/elasticsearch
+  # Or use Docker: docker run -d -p 9200:9200 -e "discovery.type=single-node" elasticsearch:8.11.0
+
+# Search Settings
+search:
+  enabled: true           # Set to false to disable ES (uses MongoDB fallback)
+  index:
+    products: odop_products
+    vendors: odop_vendors
+  page-size: 20
+  max-results: 100
+  fuzzy-max-edits: 2      # Max character edits for fuzzy search
+  highlight-pre-tag: "<em>"
+  highlight-post-tag: "</em>"
+
