@@ -16,9 +16,10 @@ public class WebConfig {
                 registry.addMapping("/**") // allow all endpoints
                         .allowedOrigins("http://localhost:4200") // allow Angular app origin
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*");
+                        .allowedHeaders("*")
+                        .exposedHeaders("X-Token-Expired") // Expose custom header so Angular can read it
+                        .allowCredentials(true);
             }
         };
     }
 }
-

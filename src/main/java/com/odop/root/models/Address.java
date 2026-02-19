@@ -1,5 +1,6 @@
 package com.odop.root.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,16 +21,16 @@ public class Address {
 
     @Id
     private String addressId;
-    
+
     private String customerId;
-    
+
     // Address type: home, work, other
     private String type;
-    
+
     // Contact info for this address
     private String name;
     private String phone;
-    
+
     // Address details
     private String addressLine1;
     private String addressLine2;
@@ -39,15 +40,18 @@ public class Address {
     private String state;
     private String pincode;
     private String country;
-    
+
     // Flags
+    @JsonProperty("isDefault")
     private boolean isDefault;
+
+    @JsonProperty("isActive")
     private boolean isActive;
-    
+
     // Timestamps
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    
+
     /**
      * Set timestamps before save
      */

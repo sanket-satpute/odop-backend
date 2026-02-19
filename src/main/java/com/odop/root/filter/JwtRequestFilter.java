@@ -36,12 +36,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         boolean result = pathMatcher.match("/odop/customer/check_customer_exists/**", request.getRequestURI()) ||
-               pathMatcher.match("/authenticate", request.getRequestURI()) ||
-               pathMatcher.match("/odop/admin/create_account", request.getRequestURI()) ||
-               pathMatcher.match("/odop/admin/check_admin_exists", request.getRequestURI()) ||
-               pathMatcher.match("/odop/customer/create_account", request.getRequestURI()) ||
-               pathMatcher.match("/odop/vendor/create_account", request.getRequestURI());
-        System.out.println("DEBUG [Filter shouldNotFilter]: URI: " + request.getRequestURI() + ", shouldSkip: " + result);
+                pathMatcher.match("/authenticate", request.getRequestURI()) ||
+                pathMatcher.match("/odop/admin/create_account", request.getRequestURI()) ||
+                pathMatcher.match("/odop/admin/check_admin_exists", request.getRequestURI()) ||
+                pathMatcher.match("/odop/customer/create_account", request.getRequestURI()) ||
+                pathMatcher.match("/odop/vendor/create_account", request.getRequestURI());
+        System.out
+                .println("DEBUG [Filter shouldNotFilter]: URI: " + request.getRequestURI() + ", shouldSkip: " + result);
         return result;
     }
 
@@ -61,6 +62,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException ex) {
                 log.warn("Expired JWT received for URI {}: {}", request.getRequestURI(), ex.getMessage());
                 SecurityContextHolder.clearContext();
+                // Return 401 with X-Token-Expired header so the frontend can show re-login
+                // dialog
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setHeader("X-Token-Expired", "true");
+                response.setContentType("application/json");
+                response.getWriter().write(
+                        "{\"error\":\"TOKEN_EXPIRED\",\"message\":\"Your session has expired. Please re-login.\"}");
+                return; // Stop the filter chain — do not proceed to the controller
             } catch (JwtException | IllegalArgumentException ex) {
                 log.warn("Invalid JWT received for URI {}: {}", request.getRequestURI(), ex.getMessage());
                 SecurityContextHolder.clearContext();

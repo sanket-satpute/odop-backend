@@ -23,30 +23,36 @@ public class Cart {
 
     @Id
     private String cartId;
-    private String customerId;              // reference to Customer
-    private List<CartItem> cartItems;       // embedded cart items (supports multi-vendor)
+    private String customerId; // reference to Customer
+    private List<CartItem> cartItems; // embedded cart items (supports multi-vendor)
     @Builder.Default
     private double totalAmount = 0;
     @Builder.Default
     private int totalItems = 0;
     @Builder.Default
-    private String status = "ACTIVE";       // ACTIVE, ABANDONED, CONVERTED
-    
+    private String status = "ACTIVE"; // ACTIVE, ABANDONED, CONVERTED
+
     // Legacy fields - kept for backward compatibility
     @Deprecated
-    private String vendorId;                // use cartItems.vendorId instead
+    private String vendorId; // use cartItems.vendorId instead
     @Deprecated
-    private List<String> productIds;        // use cartItems instead
+    private List<String> productIds; // use cartItems instead
     @Deprecated
-    private List<Integer> quantities;       // use cartItems instead
+    private List<Integer> quantities; // use cartItems instead
     @Deprecated
     private boolean approval;
-    
+
     // Single item fields for simple cart operations (used by frontend)
-    private String productId;               // single product ID for simple carts
-    private int quantity;                   // quantity for single product cart
-    private String time;                    // timestamp string
-    
+    // Single item fields for simple cart operations (used by frontend)
+    private String productId; // single product ID for simple carts
+
+    @org.springframework.data.mongodb.core.mapping.DBRef
+    @com.fasterxml.jackson.annotation.JsonProperty("product")
+    private Products product; // Populated product details
+
+    private int quantity; // quantity for single product cart
+    private String time; // timestamp string
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
